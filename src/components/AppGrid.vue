@@ -20,6 +20,11 @@
         Reset
       </button>
     </div>
+
+    <div class="text-center mt-5">
+      <h2 v-if="movieList.length > 0">Film</h2>
+    </div>
+
     <div
       class="
         container
@@ -41,10 +46,24 @@
       >
         <app-movie-card :item="media" />
       </div>
+    </div>
+    <div class="text-center mt-5">
+      <h2 v-if="seriesList.length > 0">Serie TV</h2>
+    </div>
+    <div
+      class="
+        container
+        d-flex
+        flex-wrap
+        justify-content-center
+        align-items-center
+      "
+    >
       <div
         v-for="media in seriesList"
         :key="media.id"
         class="
+          my-5
           d-flex
           justify-content-center
           col-6 col-sm-4 col-md-3 col-lg-2
@@ -73,13 +92,9 @@ export default {
   // },
   data() {
     return {
-      // filteredMediaList: [],
       inputText: "",
       movieList: [],
       seriesList: [],
-      // movies: [],
-      // series: [],
-      // searchText: "",
       apiUrl: "https://api.themoviedb.org/3/search/",
       apiKey: "56b444989b81740766d743a8aa50b267",
     };
@@ -98,14 +113,6 @@ export default {
         .then((res) => {
           console.log(res);
           this.movieList = res.data.results;
-          // this.movieList.forEach((el) => {
-          //   if (!this.filteredmovieList.includes(el.species)) {
-          //     this.species.push(el.species);
-          //   }
-          // });
-          // store.setSpecies(this.species);
-          // console.log(this.characterList);
-          // this.loading = false;
         })
         .catch((error) => {
           console.log(error);
@@ -116,14 +123,6 @@ export default {
         .then((res) => {
           console.log(res);
           this.seriesList = res.data.results;
-          // this.filteredList.forEach((el) => {
-          //   if (!this.filteredfilteredList.includes(el.species)) {
-          //     this.species.push(el.species);
-          //   }
-          // });
-          // store.setSpecies(this.species);
-          // console.log(this.characterList);
-          // this.loading = false;
         })
         .catch((error) => {
           console.log(error);
@@ -140,4 +139,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+h2 {
+  color: white;
+}
 </style>

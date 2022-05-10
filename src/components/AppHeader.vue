@@ -12,12 +12,6 @@ export default {
   data() {
     return {};
   },
-  //   methods: {
-  //     search() {
-  //       this.$emit("search", this.inputText);
-  //       //   this.inputText = "";
-  //     },
-  //   },
 };
 </script>
 
