@@ -1,0 +1,12 @@
+// Node Modules
+@import "~bootstrap/scss/bootstrap.scss"; // così si importa un file dai node modules
+
+//Font
+
+//Styles
+@import "./variables.scss";
+
+body {
+  background-color: $body-bg-color;
+  font-family: $main-font;
+}
