@@ -1,11 +1,59 @@
 <template>
-  <div id="movie-card" class="container d-flex text-center">
-    <div>
-      <img class="" :src="item.poster" alt="" />
+  <div
+    id="movie-card"
+    class="
+      container
+      card
+      d-flex
+      flex-column
+      justify-content-between
+      text-center
+    "
+  >
+    <div id="card-image">
+      <img
+        class="img-fluid"
+        v-if="item.poster_path === null"
+        id="poster"
+        src="https://image.tmdb.org/t/p/w342/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+        :alt="item.title"
+      />
+      <img
+        class="img-fluid"
+        v-if="item.poster_path !== null"
+        id="poster"
+        :src="imgUrl + item.poster_path"
+        :alt="item.title"
+      />
+    </div>
+    <div class="d-flex flex-column align-items-center">
       <h6 class="my-3">{{ item.title }}</h6>
       <p>{{ item.original_title }}</p>
-      <p>{{ item.original_language }}</p>
-      <p>{{ item.vote_average }}</p>
+      <p
+        v-if="
+          item.original_language !== 'it' &&
+          item.original_language !== 'en' &&
+          item.original_language !== 'fr' &&
+          item.original_language !== 'es' &&
+          item.original_language !== 'de'
+        "
+      >
+        {{ item.original_language }}
+      </p>
+      <img
+        id="flag"
+        class="mb-3"
+        v-if="
+          item.original_language === 'it' ||
+          item.original_language === 'en' ||
+          item.original_language === 'fr' ||
+          item.original_language === 'es' ||
+          item.original_language === 'de'
+        "
+        :src="require('../assets/img/' + item.original_language + '.png')"
+        :alt="item.original_language"
+      />
+      <p>Voto: {{ item.vote_average }}</p>
     </div>
   </div>
 </template>
@@ -14,37 +62,46 @@
 export default {
   name: "AppMovieCard",
   props: ["item"],
+  data() {
+    return {
+      imgUrl: "https://image.tmdb.org/t/p/w342",
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../assets/styles/variables.scss";
 #movie-card {
-  // width: 200px;
-  // min-width: 200px;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 400px;
   cursor: pointer;
   transition: transform 0.5s;
   &:hover {
     background-color: lighten(black, 10%);
-    // filter: invert(0.1);
     transform: scale(1.1);
+  }
+  #card-image {
+    height: 40%;
+    img {
+      margin-top: 20px;
+      height: 90%;
+      width: 80%;
+    }
   }
   div {
     width: 100%;
-    padding: 20px 0;
+    height: 60%;
     h6 {
       text-transform: uppercase;
       color: white;
     }
-    img {
-      box-shadow: 0 0 6px 3px rgba(#000, 0.15);
-      width: 100%;
-      // height: 100px;
-    }
     p {
-      margin-bottom: 0;
-      //   color: $text-color;
+      color: white;
+    }
+    #flag {
+      width: 30px;
+      height: 20px;
     }
   }
 }

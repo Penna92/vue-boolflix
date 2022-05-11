@@ -2,6 +2,26 @@
   <header>
     <div class="container d-flex justify-content-between align-items-center">
       <h1>BOOLFLIX</h1>
+      <div class="d-flex align-items-center gap-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Cerca film o serie tv"
+          aria-label="Cerca film o serie tv"
+          v-model="search"
+          @keyup.enter="$emit('performSearch', search)"
+        />
+        <button
+          @click="searchMedia"
+          class="btn btn-outline-secondary"
+          type="button"
+        >
+          Search
+        </button>
+        <button @click="reset" class="btn btn-outline-secondary" type="button">
+          Reset
+        </button>
+      </div>
     </div>
   </header>
 </template>
@@ -10,7 +30,19 @@
 export default {
   name: "AppHeader",
   data() {
-    return {};
+    return {
+      search: "",
+    };
+  },
+  methods: {
+    searchMedia() {
+      this.$emit("performSearch", this.search);
+      //   this.search = "";
+    },
+    reset() {
+      this.$emit("resetSearch", this.search);
+      this.search = "";
+    },
   },
 };
 </script>
@@ -19,7 +51,6 @@ export default {
 @import "../assets/styles/general.scss";
 header {
   height: 80px;
-
   width: 100%;
   background-color: black;
   div {
@@ -27,9 +58,6 @@ header {
     line-height: 80px;
     H1 {
       color: red;
-    }
-    input {
-      width: 300px !important;
     }
   }
 }
