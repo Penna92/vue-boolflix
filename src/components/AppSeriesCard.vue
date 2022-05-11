@@ -1,16 +1,12 @@
 <template>
   <div
+    @mouseover="hover = false"
+    @mouseleave="hover = true"
     id="series-card"
-    class="
-      container
-      card
-      d-flex
-      flex-column
-      justify-content-between
-      text-center
-    "
+    :class="{ container: !hover }"
+    class="card d-flex flex-column justify-content-between text-center"
   >
-    <div id="card-image">
+    <div v-if="hover === true" id="card-image">
       <img
         v-if="item.poster_path === null"
         id="poster"
@@ -24,9 +20,16 @@
         :alt="item.title"
       />
     </div>
-    <div class="d-flex flex-column align-items-center">
-      <h6 class="my-3">{{ item.name }}</h6>
-      <p>{{ item.original_name }}</p>
+    <div
+      :class="{ 'd-none': hover }"
+      class="d-flex flex-column align-items-center my-3"
+    >
+      <p>
+        Titolo: <span>{{ item.name }}</span>
+      </p>
+      <p>
+        Titolo originale: <span>{{ item.original_name }}</span>
+      </p>
       <p
         v-if="
           item.original_language !== 'it' &&
@@ -36,11 +39,9 @@
           item.original_language !== 'de'
         "
       >
-        {{ item.original_language }}
+        Lingua originale: {{ item.original_language }}
       </p>
-      <img
-        id="flag"
-        class="mb-3"
+      <span
         v-if="
           item.original_language === 'it' ||
           item.original_language === 'en' ||
@@ -48,10 +49,26 @@
           item.original_language === 'es' ||
           item.original_language === 'de'
         "
-        :src="require('../assets/img/' + item.original_language + '.png')"
-        :alt="item.original_language"
-      />
-      <p>Voto: {{ item.vote_average }}</p>
+        class="d-flex align-items-center"
+      >
+        <p class="d-inline">Lingua originale:</p>
+        <img
+          id="flag"
+          class="mb-3"
+          :src="require('../assets/img/' + item.original_language + '.png')"
+          :alt="item.original_language"
+        />
+      </span>
+
+      <p v-if="parseInt(item.vote_average / 2) === 0">Voto: ☆ ☆ ☆ ☆ ☆</p>
+      <p v-if="parseInt(item.vote_average / 2) === 1">Voto: ⭐☆ ☆ ☆ ☆</p>
+      <p v-if="parseInt(item.vote_average / 2) === 2">Voto: ⭐⭐☆ ☆ ☆</p>
+      <p v-if="parseInt(item.vote_average / 2) === 3">Voto: ⭐⭐⭐☆ ☆</p>
+      <p v-if="parseInt(item.vote_average / 2) === 4">Voto: ⭐⭐⭐⭐☆</p>
+      <p v-if="parseInt(item.vote_average / 2) === 5">Voto: ⭐⭐⭐⭐⭐</p>
+      <p v-if="item.overview !== ''">
+        Overview: <span>{{ item.overview }}</span>
+      </p>
     </div>
   </div>
 </template>
@@ -63,6 +80,7 @@ export default {
   data() {
     return {
       imgUrl: "https://image.tmdb.org/t/p/w342",
+      hover: true,
     };
   },
 };
@@ -71,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/styles/variables.scss";
 #series-card {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: black;
   height: 400px;
   cursor: pointer;
   transition: transform 0.5s;
@@ -80,26 +98,31 @@ export default {
     transform: scale(1.1);
   }
   #card-image {
-    height: 40%;
+    height: 100%;
+    width: 100%;
     img {
-      margin-top: 20px;
-      height: 90%;
-      width: 80%;
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
     }
   }
   div {
-    width: 100%;
-    height: 60%;
-    h6 {
-      text-transform: uppercase;
-      color: white;
-    }
+    overflow: hidden;
     p {
+      font-size: 18px;
       color: white;
+      font-weight: bold;
+      span {
+        font-size: 16px;
+        font-weight: 300;
+      }
     }
-    #flag {
-      width: 30px;
-      height: 20px;
+    span {
+      #flag {
+        margin-left: 5px;
+        width: 30px;
+        height: 20px;
+      }
     }
   }
 }

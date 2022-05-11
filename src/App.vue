@@ -22,7 +22,7 @@
             class="
               d-flex
               justify-content-center
-              col-6 col-sm-4 col-md-3 col-lg-2
+              col-6 col-sm-6 col-md-4 col-lg-3
               m-3
             "
           >
@@ -48,7 +48,7 @@
               my-5
               d-flex
               justify-content-center
-              col-6 col-sm-4 col-md-3 col-lg-2
+              col-6 col-sm-6 col-md-4 col-lg-3
               m-3
             "
           >
@@ -97,6 +97,7 @@ export default {
         .then((res) => {
           console.log(res);
           this.movieList = res.data.results;
+          // console.log(this.movieList);
         })
         .catch((error) => {
           console.log(error);
