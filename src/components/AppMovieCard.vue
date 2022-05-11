@@ -20,8 +20,8 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/styles/variables.scss";
 #movie-card {
-  width: 200px;
-  min-width: 200px;
+  // width: 200px;
+  // min-width: 200px;
   background-color: black;
   cursor: pointer;
   transition: transform 0.5s;
