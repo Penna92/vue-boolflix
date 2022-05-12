@@ -9,7 +9,7 @@
     <div v-if="hover === true" id="card-image">
       <img
         v-if="item.poster_path === null"
-        id="poster"
+        id="default-image"
         src="https://image.tmdb.org/t/p/w342/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
         :alt="item.title"
       />
@@ -69,11 +69,18 @@
       <p v-if="item.overview !== ''">
         Overview: <span>{{ item.overview }}</span>
       </p>
+      <p v-if="cast.length > 0">
+        Cast : <br />
+        <span v-for="(actors, index) in cast" :key="index">
+          {{ actors.name }} <br />
+        </span>
+      </p>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AppSeriesCard",
   props: ["item"],
@@ -81,7 +88,22 @@ export default {
     return {
       imgUrl: "https://image.tmdb.org/t/p/w342",
       hover: true,
+      cast: [],
     };
+  },
+  mounted() {
+    axios
+      .get(
+        "https://api.themoviedb.org/3/tv/" +
+          this.item.id +
+          "/credits?api_key=56b444989b81740766d743a8aa50b267"
+      )
+      .then((res) => {
+        this.cast = res.data.cast;
+        if (this.cast.length >= 5) {
+          this.cast.length = 5;
+        }
+      });
   },
 };
 </script>
@@ -91,6 +113,7 @@ export default {
 #series-card {
   background-color: black;
   height: 400px;
+  //   min-width: 300px;
   cursor: pointer;
   transition: transform 0.5s;
   &:hover {
@@ -100,14 +123,19 @@ export default {
   #card-image {
     height: 100%;
     width: 100%;
+    #default-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
     img {
       height: 100%;
       width: 100%;
-      object-fit: contain;
+      object-fit: cover;
     }
   }
   div {
-    overflow: hidden;
+    overflow: auto;
     p {
       font-size: 18px;
       color: white;
@@ -117,13 +145,30 @@ export default {
         font-weight: 300;
       }
     }
-    span {
-      #flag {
-        margin-left: 5px;
-        width: 30px;
-        height: 20px;
-      }
+    #flag {
+      margin-left: 5px;
+      width: 30px;
+      height: 20px;
     }
+  }
+  /* width */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
 }
 </style>
