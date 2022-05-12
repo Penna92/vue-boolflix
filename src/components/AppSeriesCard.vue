@@ -27,7 +27,7 @@
       <p>
         Titolo: <span>{{ item.name }}</span>
       </p>
-      <p>
+      <p v-if="item.original_name !== item.name">
         Titolo originale: <span>{{ item.original_name }}</span>
       </p>
       <p
@@ -75,6 +75,10 @@
           {{ actors.name }} <br />
         </span>
       </p>
+      <p v-if="filteredGenres !== ''">
+        Genere:
+        <span>{{ filteredGenres }}</span>
+      </p>
     </div>
   </div>
 </template>
@@ -89,7 +93,96 @@ export default {
       imgUrl: "https://image.tmdb.org/t/p/w342",
       hover: true,
       cast: [],
+      genres: [
+        {
+          id: 28,
+          name: "Action",
+        },
+        {
+          id: 12,
+          name: "Adventure",
+        },
+        {
+          id: 16,
+          name: "Animation",
+        },
+        {
+          id: 35,
+          name: "Comedy",
+        },
+        {
+          id: 80,
+          name: "Crime",
+        },
+        {
+          id: 99,
+          name: "Documentary",
+        },
+        {
+          id: 18,
+          name: "Drama",
+        },
+        {
+          id: 10751,
+          name: "Family",
+        },
+        {
+          id: 14,
+          name: "Fantasy",
+        },
+        {
+          id: 36,
+          name: "History",
+        },
+        {
+          id: 27,
+          name: "Horror",
+        },
+        {
+          id: 10402,
+          name: "Music",
+        },
+        {
+          id: 9648,
+          name: "Mystery",
+        },
+        {
+          id: 10749,
+          name: "Romance",
+        },
+        {
+          id: 878,
+          name: "Science Fiction",
+        },
+        {
+          id: 10770,
+          name: "TV Movie",
+        },
+        {
+          id: 53,
+          name: "Thriller",
+        },
+        {
+          id: 10752,
+          name: "War",
+        },
+        {
+          id: 37,
+          name: "Western",
+        },
+      ],
     };
+  },
+  computed: {
+    filteredGenres() {
+      this.genres.forEach((el) => {
+        if (this.item.genre_ids.includes(el.id)) {
+          // console.log(el.name);
+          this.mediaGenre = el.name;
+        }
+      });
+      return this.mediaGenre;
+    },
   },
   mounted() {
     axios
@@ -113,7 +206,7 @@ export default {
 #series-card {
   background-color: black;
   height: 400px;
-  //   min-width: 300px;
+  width: 300px;
   cursor: pointer;
   transition: transform 0.5s;
   &:hover {
@@ -127,11 +220,13 @@ export default {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      object-position: center;
     }
     img {
       height: 100%;
       width: 100%;
       object-fit: cover;
+      object-position: center;
     }
   }
   div {
