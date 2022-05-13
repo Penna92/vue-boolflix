@@ -74,9 +74,10 @@
           {{ actors.name }} <br />
         </span>
       </p>
-      <p v-if="filteredGenres !== ''">
+      <p v-if="item.genre_ids.length !== 0">
         Genere:
         <span>{{ filteredGenres }}</span>
+        <span> Aoooo{{ filteredGenre }}</span>
       </p>
     </div>
   </div>
@@ -86,7 +87,6 @@
 import axios from "axios";
 export default {
   name: "AppMovieCard",
-  props: ["item"],
   data() {
     return {
       imgUrl: "https://image.tmdb.org/t/p/w342",
@@ -172,6 +172,7 @@ export default {
       ],
     };
   },
+  props: ["item", "filteredGenre"],
   mounted() {
     axios
       .get(

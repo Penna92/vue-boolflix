@@ -3,6 +3,10 @@
     <app-header @performSearch="search" @resetSearch="reset" />
     <main>
       <section id="main-grid" class="container">
+        <app-select-genre
+          @searchGenre="setSearchGenre($event)"
+          :mediaGenres="genres"
+        />
         <div
           v-if="
             movieList.length === 0 &&
@@ -93,7 +97,7 @@
               m-3
             "
           >
-            <app-movie-card :item="media" />
+            <app-movie-card :item="media" :filteredGenre="searchText" />
           </div>
         </div>
         <div class="text-center mt-5">
@@ -125,7 +129,7 @@
               m-3
             "
           >
-            <app-series-card :item="media" />
+            <app-series-card :item="media" :filtro="searchText" />
           </div>
         </div>
       </section>
@@ -138,26 +142,144 @@ import axios from "axios";
 import AppHeader from "./components/AppHeader.vue";
 import AppMovieCard from "./components/AppMovieCard.vue";
 import AppSeriesCard from "./components/AppSeriesCard.vue";
+import AppSelectGenre from "./components/AppSelectGenre.vue";
 export default {
   name: "App",
   components: {
     AppHeader,
     AppMovieCard,
     AppSeriesCard,
+    AppSelectGenre,
   },
   data() {
     return {
-      // cast: [],
       recommendedMovies: [],
       recommendedSeries: [],
+      // filteredMovieList: [],
+      // filteredSeriesList: [],
       movieList: [],
       seriesList: [],
       apiUrl: "https://api.themoviedb.org/3/search/",
       apiKey: "56b444989b81740766d743a8aa50b267",
       pressedSearch: false,
+      genres: [
+        {
+          id: 28,
+          name: "Action",
+        },
+        {
+          id: 12,
+          name: "Adventure",
+        },
+        {
+          id: 16,
+          name: "Animation",
+        },
+        {
+          id: 35,
+          name: "Comedy",
+        },
+        {
+          id: 80,
+          name: "Crime",
+        },
+        {
+          id: 99,
+          name: "Documentary",
+        },
+        {
+          id: 18,
+          name: "Drama",
+        },
+        {
+          id: 10751,
+          name: "Family",
+        },
+        {
+          id: 14,
+          name: "Fantasy",
+        },
+        {
+          id: 36,
+          name: "History",
+        },
+        {
+          id: 27,
+          name: "Horror",
+        },
+        {
+          id: 10402,
+          name: "Music",
+        },
+        {
+          id: 9648,
+          name: "Mystery",
+        },
+        {
+          id: 10749,
+          name: "Romance",
+        },
+        {
+          id: 878,
+          name: "Science Fiction",
+        },
+        {
+          id: 10770,
+          name: "TV Movie",
+        },
+        {
+          id: 53,
+          name: "Thriller",
+        },
+        {
+          id: 10752,
+          name: "War",
+        },
+        {
+          id: 37,
+          name: "Western",
+        },
+        {
+          id: 10759,
+          name: "Action & Adventure",
+        },
+        {
+          id: 10762,
+          name: "Kids",
+        },
+        {
+          id: 10763,
+          name: "News",
+        },
+        {
+          id: 10764,
+          name: "Reality",
+        },
+        {
+          id: 10765,
+          name: "Sci-Fi & Fantasy",
+        },
+        {
+          id: 10766,
+          name: "Soap",
+        },
+        {
+          id: 10767,
+          name: "Talk",
+        },
+        {
+          id: 10768,
+          name: "War & Politics",
+        },
+      ],
+      searchText: "WEEEE",
     };
   },
   methods: {
+    setSearchGenre(text) {
+      this.searchText = text.name;
+      console.log(text, this.searchText);
+    },
     reset(text) {
       (this.seriesList = []), (this.movieList = []), console.log(text);
       this.pressedSearch = false;
@@ -173,7 +295,7 @@ export default {
       axios
         .get(this.apiUrl + "movie", paramsObj)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.movieList = res.data.results;
         })
         .catch((error) => {
@@ -183,7 +305,7 @@ export default {
       axios
         .get(this.apiUrl + "tv", paramsObj)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.seriesList = res.data.results;
         })
         .catch((error) => {
@@ -217,6 +339,23 @@ export default {
           (this.movieList = []),
           (this.loading = false);
       });
+  },
+  computed: {
+    // filteredMovieList() {
+    // if (this.searchText === "") {
+    // return this.recommendedMovies;
+    // }
+    // return this.movieList.filter((el) => {
+    // if (this.searchText === ) {
+    // return
+    //     return el.genre === this.searchText || el.author === this.searchText2;
+    //   } else if (this.searchText !== "" && this.searchText2 === "") {
+    //     return el.genre === this.searchText || el.author === this.searchText2;
+    //   } else {
+    //     return el.genre === this.searchText && el.author === this.searchText2;
+    //   }
+    // });
+    // },
   },
 };
 </script>
