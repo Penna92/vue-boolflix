@@ -59,12 +59,23 @@
           :alt="item.original_language"
         />
       </span>
-      <p v-if="parseInt(item.vote_average / 2) === 0">Voto: ☆ ☆ ☆ ☆ ☆</p>
+      <!-- <p v-if="parseInt(item.vote_average / 2) === 0">Voto: ☆ ☆ ☆ ☆ ☆</p>
       <p v-if="parseInt(item.vote_average / 2) === 1">Voto: ⭐☆ ☆ ☆ ☆</p>
       <p v-if="parseInt(item.vote_average / 2) === 2">Voto: ⭐⭐☆ ☆ ☆</p>
       <p v-if="parseInt(item.vote_average / 2) === 3">Voto: ⭐⭐⭐☆ ☆</p>
       <p v-if="parseInt(item.vote_average / 2) === 4">Voto: ⭐⭐⭐⭐☆</p>
-      <p v-if="parseInt(item.vote_average / 2) === 5">Voto: ⭐⭐⭐⭐⭐</p>
+      <p v-if="parseInt(item.vote_average / 2) === 5">Voto: ⭐⭐⭐⭐⭐</p> -->
+      <span class="d-flex flex-row gap-1">
+        <p v-for="(n, index) in 5" :key="index.id">
+          <i
+            :class="
+              n <= transformVote
+                ? 'fa-solid fa-star yellow-star'
+                : 'fa-solid fa-star white-star'
+            "
+          ></i>
+        </p>
+      </span>
       <p v-if="item.overview !== ''">
         Overview: <span>{{ item.overview }}</span>
       </p>
@@ -196,6 +207,9 @@ export default {
         }
       });
     },
+    transformVote() {
+      return parseInt(this.item.vote_average / 2);
+    },
   },
 };
 </script>
@@ -264,6 +278,12 @@ export default {
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+  .yellow-star {
+    color: yellow;
+  }
+  .white-star {
+    color: lightgray;
   }
 }
 </style>
