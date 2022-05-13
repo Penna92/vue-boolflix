@@ -37,5 +37,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+select {
+  width: 200px !important;
+}
 </style>

@@ -39,7 +39,7 @@
             <div
               v-for="media in filteredRecommendedMovies"
               :key="media.id"
-              class="my-5 mx-3 d-flex justify-content-center"
+              class="m-5 d-flex justify-content-center"
             >
               <app-movie-card :item="media" />
             </div>
@@ -67,7 +67,7 @@
             <div
               v-for="media in filteredRecommendedSeries"
               :key="media.id"
-              class="my-5 mx-3 d-flex justify-content-center"
+              class="m-5 d-flex justify-content-center"
             >
               <app-series-card :item="media" />
             </div>
@@ -75,7 +75,10 @@
         </div>
         <div class="text-center mt-5">
           <h2 v-if="filteredMovies.length > 0">Movies</h2>
-          <h2 style="color: red" v-if="filteredMovies.length === 0">
+          <h2
+            style="color: red"
+            v-if="filteredMovies.length === 0 && pressedSearch === true"
+          >
             Nessun film corrisponde alla tua ricerca
           </h2>
         </div>
@@ -92,14 +95,17 @@
           <div
             v-for="media in filteredMovies"
             :key="media.id"
-            class="d-flex justify-content-center my-5 mx-3"
+            class="d-flex justify-content-center m-5"
           >
             <app-movie-card :item="media" :filteredGenre="searchText" />
           </div>
         </div>
         <div class="text-center mt-5">
           <h2 v-if="filteredSeries.length > 0">TV series</h2>
-          <h2 style="color: red" v-if="filteredSeries.length === 0">
+          <h2
+            style="color: red"
+            v-if="filteredSeries.length === 0 && pressedSearch === true"
+          >
             Nessuna serie TV corrisponde alla tua ricerca
           </h2>
         </div>
@@ -115,7 +121,7 @@
           <div
             v-for="media in filteredSeries"
             :key="media.id"
-            class="d-flex justify-content-center my-5 mx-3"
+            class="d-flex justify-content-center m-5"
           >
             <app-series-card :item="media" :filteredGenre="searchText" />
           </div>

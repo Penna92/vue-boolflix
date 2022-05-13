@@ -69,14 +69,14 @@
         Overview: <span>{{ item.overview }}</span>
       </p>
       <p v-if="cast.length > 0">
-        Cast : <br />
+        Cast: <br />
         <span v-for="(actors, index) in cast" :key="index">
           {{ actors.name }} <br />
         </span>
       </p>
-      <p v-if="item.genre_ids.length !== 0">
-        Genere:
-        <span>{{ filteredGenres }}</span>
+      <p v-for="(item, index) in filteredGenres" :key="index">
+        Genere {{ index + 1 }}:
+        <span>{{ filteredGenres[index].name }}</span>
       </p>
     </div>
   </div>
@@ -188,13 +188,13 @@ export default {
   },
   computed: {
     filteredGenres() {
-      this.genres.forEach((el) => {
+      return this.genres.filter((el) => {
         if (this.item.genre_ids.includes(el.id)) {
           // console.log(el.name);
-          this.mediaGenre = el.name;
+          // this.mediaGenre = el.name;
+          return el;
         }
       });
-      return this.mediaGenre;
     },
   },
 };
@@ -209,7 +209,7 @@ export default {
   cursor: pointer;
   transition: transform 0.5s;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
     z-index: 999;
   }
   #card-image {
@@ -237,6 +237,7 @@ export default {
       span {
         font-size: 16px;
         font-weight: 300;
+        color: lightgray;
       }
     }
     #flag {
