@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="filteredGenre === filteredGenres || filteredGenre === undefined"
     @mouseover="hover = false"
     @mouseleave="hover = true"
     id="series-card"
@@ -24,7 +25,6 @@
       :class="{ 'd-none': hover }"
       class="d-flex flex-column align-items-center my-3"
     >
-      <button @click="prova">prova</button>
       <p>
         Titolo: <span>{{ item.name }}</span>
       </p>
@@ -83,7 +83,6 @@
       <p v-if="item.genre_ids.length !== 0">
         Genere:
         <span>{{ filteredGenres }}</span>
-        <span> Aooo {{ filtro }}</span>
       </p>
     </div>
   </div>
@@ -95,7 +94,7 @@ export default {
   name: "AppSeriesCard",
   props: {
     item: Object,
-    filtro: String,
+    filteredGenre: undefined,
   },
   data() {
     return {
@@ -170,13 +169,7 @@ export default {
       ],
     };
   },
-  methods: {
-    prova() {
-      setTimeout(() => {
-        console.log(this.filtro);
-      }, 2000);
-    },
-  },
+  methods: {},
   mounted() {
     axios
       .get(

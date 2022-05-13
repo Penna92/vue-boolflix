@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="filteredGenre === filteredGenres || filteredGenre === undefined"
     @mouseover="hover = false"
     @mouseleave="hover = true"
     id="movie-card"
@@ -77,7 +78,6 @@
       <p v-if="item.genre_ids.length !== 0">
         Genere:
         <span>{{ filteredGenres }}</span>
-        <span> Aoooo{{ filteredGenre }}</span>
       </p>
     </div>
   </div>

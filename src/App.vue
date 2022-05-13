@@ -31,12 +31,7 @@
             <div
               v-for="media in recommendedMovies"
               :key="media.id"
-              class="
-                d-flex
-                justify-content-center
-                col-6 col-sm-6 col-md-4 col-lg-3
-                m-3
-              "
+              class="my-5 mx-3 d-flex justify-content-center"
             >
               <app-movie-card :item="media" />
             </div>
@@ -56,13 +51,7 @@
             <div
               v-for="media in recommendedSeries"
               :key="media.id"
-              class="
-                my-5
-                d-flex
-                justify-content-center
-                col-6 col-sm-6 col-md-4 col-lg-3
-                m-3
-              "
+              class="my-5 mx-3 d-flex justify-content-center"
             >
               <app-series-card :item="media" />
             </div>
@@ -90,12 +79,7 @@
           <div
             v-for="media in movieList"
             :key="media.id"
-            class="
-              d-flex
-              justify-content-center
-              col-6 col-sm-6 col-md-4 col-lg-3
-              m-3
-            "
+            class="d-flex justify-content-center my-5 mx-3"
           >
             <app-movie-card :item="media" :filteredGenre="searchText" />
           </div>
@@ -121,15 +105,9 @@
           <div
             v-for="media in seriesList"
             :key="media.id"
-            class="
-              my-5
-              d-flex
-              justify-content-center
-              col-6 col-sm-6 col-md-4 col-lg-3
-              m-3
-            "
+            class="d-flex justify-content-center my-5 mx-3"
           >
-            <app-series-card :item="media" :filtro="searchText" />
+            <app-series-card :item="media" :filteredGenre="searchText" />
           </div>
         </div>
       </section>
@@ -272,13 +250,17 @@ export default {
           name: "War & Politics",
         },
       ],
-      searchText: "WEEEE",
+      searchText: undefined,
+      searchId: 35,
     };
   },
   methods: {
     setSearchGenre(text) {
       this.searchText = text.name;
-      console.log(text, this.searchText);
+      this.searchId = text.id;
+      console.log(this.searchId);
+      console.log(this.searchText);
+      // console.log(text, this.searchText);
     },
     reset(text) {
       (this.seriesList = []), (this.movieList = []), console.log(text);
@@ -320,7 +302,17 @@ export default {
         "https://api.themoviedb.org/3/search/movie?api_key=56b444989b81740766d743a8aa50b267&query=ritorno"
       )
       .then((res) => {
+        console.log(res);
+        console.log(res.data.results);
+        console.log(res.data.results[0].genre_ids[0]);
         this.recommendedMovies = res.data.results;
+        // res.data.results.forEach((el) => {
+        // if (el.genre_ids[0] === this.searchId) {
+        //   console.log(el.genre_ids[0], this.searchId);
+        //   this.recommendedMovies.push(el);
+        //   //     console.log(this.searchId);
+        // }
+        // });
       })
       .catch((error) => {
         console.log(error);
