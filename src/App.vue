@@ -3,7 +3,9 @@
     <app-header @performSearch="search" @resetSearch="reset" />
     <main>
       <section id="main-grid" class="container">
+        <app-loader v-if="loading" />
         <app-select-genre
+          v-if="!loading"
           @searchGenre="setSearchGenre($event)"
           :mediaGenres="genres"
         />
@@ -11,7 +13,8 @@
           v-if="
             movieList.length === 0 &&
             seriesList.length === 0 &&
-            pressedSearch === false
+            pressedSearch === false &&
+            loading === false
           "
           id="initialPage"
         >
@@ -137,6 +140,7 @@ import AppHeader from "./components/AppHeader.vue";
 import AppMovieCard from "./components/AppMovieCard.vue";
 import AppSeriesCard from "./components/AppSeriesCard.vue";
 import AppSelectGenre from "./components/AppSelectGenre.vue";
+import AppLoader from "./components/AppLoader.vue";
 export default {
   name: "App",
   components: {
@@ -144,6 +148,7 @@ export default {
     AppMovieCard,
     AppSeriesCard,
     AppSelectGenre,
+    AppLoader,
   },
   data() {
     return {
@@ -154,6 +159,7 @@ export default {
       apiUrl: "https://api.themoviedb.org/3/search/",
       apiKey: "56b444989b81740766d743a8aa50b267",
       pressedSearch: false,
+      loading: false,
       genres: [
         {
           id: 28,
@@ -284,6 +290,7 @@ export default {
     },
     search(text) {
       this.pressedSearch = true;
+      this.loading = true;
       const paramsObj = {
         params: {
           api_key: this.apiKey,
@@ -295,6 +302,7 @@ export default {
         .then((res) => {
           // console.log(res);
           this.movieList = res.data.results;
+          this.loading = false;
         })
         .catch((error) => {
           console.log(error);
@@ -305,6 +313,7 @@ export default {
         .then((res) => {
           // console.log(res);
           this.seriesList = res.data.results;
+          this.loading = false;
         })
         .catch((error) => {
           console.log(error);
@@ -313,30 +322,34 @@ export default {
     },
   },
   mounted() {
-    axios
-      .get(
-        "https://api.themoviedb.org/3/search/movie?api_key=56b444989b81740766d743a8aa50b267&query=ritorno"
-      )
-      .then((res) => {
-        this.recommendedMovies = res.data.results;
-      })
-      .catch((error) => {
-        console.log(error);
-        this.loading = false;
-      });
-    axios
-      .get(
-        "https://api.themoviedb.org/3/search/tv?api_key=56b444989b81740766d743a8aa50b267&query=star"
-      )
-      .then((res) => {
-        this.recommendedSeries = res.data.results;
-      })
-      .catch((error) => {
-        console.log(error);
-        (this.recommendedSeries = []),
-          (this.movieList = []),
-          (this.loading = false);
-      });
+    this.loading = true;
+    setTimeout(() => {
+      axios
+        .get(
+          "https://api.themoviedb.org/3/search/movie?api_key=56b444989b81740766d743a8aa50b267&query=ritorno"
+        )
+        .then((res) => {
+          this.recommendedMovies = res.data.results;
+          this.loading = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loading = false;
+        });
+      axios
+        .get(
+          "https://api.themoviedb.org/3/search/tv?api_key=56b444989b81740766d743a8aa50b267&query=star"
+        )
+        .then((res) => {
+          this.recommendedSeries = res.data.results;
+        })
+        .catch((error) => {
+          console.log(error);
+          (this.recommendedSeries = []),
+            (this.movieList = []),
+            (this.loading = false);
+        });
+    }, 2000);
   },
   computed: {
     filteredRecommendedMovies() {
