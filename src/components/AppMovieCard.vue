@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="filteredGenre === filteredGenres || filteredGenre === undefined"
     @mouseover="hover = false"
     @mouseleave="hover = true"
     id="movie-card"

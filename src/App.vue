@@ -17,7 +17,15 @@
         >
           <h2 class="text-white mt-3">I consigliati da BoolFlix</h2>
           <div class="text-center mt-5">
-            <h2 class="text-white">Movies</h2>
+            <h2 v-if="filteredRecommendedMovies.length > 0" class="text-white">
+              Movies
+            </h2>
+            <h2
+              style="color: red"
+              v-if="filteredRecommendedMovies.length === 0"
+            >
+              Nessun film corrisponde alla tua ricerca
+            </h2>
           </div>
           <div
             class="
@@ -29,7 +37,7 @@
             "
           >
             <div
-              v-for="media in recommendedMovies"
+              v-for="media in filteredRecommendedMovies"
               :key="media.id"
               class="my-5 mx-3 d-flex justify-content-center"
             >
@@ -37,7 +45,15 @@
             </div>
           </div>
           <div class="text-center mt-5">
-            <h2 class="text-white">TV series</h2>
+            <h2 v-if="filteredRecommendedSeries.length > 0" class="text-white">
+              TV series
+            </h2>
+            <h2
+              style="color: red"
+              v-if="filteredRecommendedSeries.length === 0"
+            >
+              Nessuna serie TV corrisponde alla tua ricerca
+            </h2>
           </div>
           <div
             class="
@@ -49,7 +65,7 @@
             "
           >
             <div
-              v-for="media in recommendedSeries"
+              v-for="media in filteredRecommendedSeries"
               :key="media.id"
               class="my-5 mx-3 d-flex justify-content-center"
             >
@@ -58,11 +74,8 @@
           </div>
         </div>
         <div class="text-center mt-5">
-          <h2 v-if="movieList.length > 0">Movies</h2>
-          <h2
-            style="color: red"
-            v-if="movieList.length === 0 && pressedSearch === true"
-          >
+          <h2 v-if="filteredMovies.length > 0">Movies</h2>
+          <h2 style="color: red" v-if="filteredMovies.length === 0">
             Nessun film corrisponde alla tua ricerca
           </h2>
         </div>
@@ -77,7 +90,7 @@
           "
         >
           <div
-            v-for="media in movieList"
+            v-for="media in filteredMovies"
             :key="media.id"
             class="d-flex justify-content-center my-5 mx-3"
           >
@@ -85,11 +98,8 @@
           </div>
         </div>
         <div class="text-center mt-5">
-          <h2 v-if="seriesList.length > 0">TV series</h2>
-          <h2
-            style="color: red"
-            v-if="seriesList.length === 0 && pressedSearch === true"
-          >
+          <h2 v-if="filteredSeries.length > 0">TV series</h2>
+          <h2 style="color: red" v-if="filteredSeries.length === 0">
             Nessuna serie TV corrisponde alla tua ricerca
           </h2>
         </div>
@@ -103,7 +113,7 @@
           "
         >
           <div
-            v-for="media in seriesList"
+            v-for="media in filteredSeries"
             :key="media.id"
             class="d-flex justify-content-center my-5 mx-3"
           >
@@ -133,8 +143,6 @@ export default {
     return {
       recommendedMovies: [],
       recommendedSeries: [],
-      // filteredMovieList: [],
-      // filteredSeriesList: [],
       movieList: [],
       seriesList: [],
       apiUrl: "https://api.themoviedb.org/3/search/",
@@ -251,15 +259,15 @@ export default {
         },
       ],
       searchText: undefined,
-      searchId: 35,
+      searchId: undefined,
     };
   },
   methods: {
     setSearchGenre(text) {
       this.searchText = text.name;
       this.searchId = text.id;
-      console.log(this.searchId);
-      console.log(this.searchText);
+      // console.log(this.searchId);
+      // console.log(this.searchText);
       // console.log(text, this.searchText);
     },
     reset(text) {
@@ -302,17 +310,7 @@ export default {
         "https://api.themoviedb.org/3/search/movie?api_key=56b444989b81740766d743a8aa50b267&query=ritorno"
       )
       .then((res) => {
-        console.log(res);
-        console.log(res.data.results);
-        console.log(res.data.results[0].genre_ids[0]);
         this.recommendedMovies = res.data.results;
-        // res.data.results.forEach((el) => {
-        // if (el.genre_ids[0] === this.searchId) {
-        //   console.log(el.genre_ids[0], this.searchId);
-        //   this.recommendedMovies.push(el);
-        //   //     console.log(this.searchId);
-        // }
-        // });
       })
       .catch((error) => {
         console.log(error);
@@ -333,21 +331,50 @@ export default {
       });
   },
   computed: {
-    // filteredMovieList() {
-    // if (this.searchText === "") {
-    // return this.recommendedMovies;
-    // }
-    // return this.movieList.filter((el) => {
-    // if (this.searchText === ) {
-    // return
-    //     return el.genre === this.searchText || el.author === this.searchText2;
-    //   } else if (this.searchText !== "" && this.searchText2 === "") {
-    //     return el.genre === this.searchText || el.author === this.searchText2;
-    //   } else {
-    //     return el.genre === this.searchText && el.author === this.searchText2;
-    //   }
-    // });
-    // },
+    filteredRecommendedMovies() {
+      if (this.searchId === undefined) {
+        return this.recommendedMovies;
+      }
+      return this.recommendedMovies.filter((el) => {
+        if (el.genre_ids.includes(this.searchId)) {
+          // console.log(el.genre_ids[0], this.searchId, el);
+          return el;
+        }
+      });
+    },
+    filteredRecommendedSeries() {
+      if (this.searchId === undefined) {
+        return this.recommendedSeries;
+      }
+      return this.recommendedSeries.filter((el) => {
+        if (el.genre_ids.includes(this.searchId)) {
+          // console.log(el.genre_ids[0], this.searchId, el);
+          return el;
+        }
+      });
+    },
+    filteredMovies() {
+      if (this.searchId === undefined) {
+        return this.movieList;
+      }
+      return this.movieList.filter((el) => {
+        if (el.genre_ids.includes(this.searchId)) {
+          // console.log(el.genre_ids[0], this.searchId, el);
+          return el;
+        }
+      });
+    },
+    filteredSeries() {
+      if (this.searchId === undefined) {
+        return this.seriesList;
+      }
+      return this.seriesList.filter((el) => {
+        if (el.genre_ids.includes(this.searchId)) {
+          // console.log(el.genre_ids[0], this.searchId, el);
+          return el;
+        }
+      });
+    },
   },
 };
 </script>
