@@ -7,7 +7,7 @@
       v-model="selectValue"
       @change="searchGenre"
     >
-      <option value="">Filter by genre</option>
+      <option value="">Filtra per genere</option>
       <option :value="genre" v-for="genre in mediaGenres" :key="genre.id">
         {{ genre.name }}
       </option>
@@ -27,7 +27,7 @@ export default {
   methods: {
     searchGenre() {
       this.$emit("searchGenre", this.selectValue);
-      //   this.selectValue = "";
+      // this.selectValue = "";
     },
     // reset() {
     //   this.selectValue = "";

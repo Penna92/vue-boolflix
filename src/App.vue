@@ -15,17 +15,17 @@
           "
           id="initialPage"
         >
-          <h2 class="text-white mt-3">I consigliati da BoolFlix</h2>
-          <div class="text-center mt-5">
-            <h2 v-if="filteredRecommendedMovies.length > 0" class="text-white">
-              Movies
-            </h2>
-            <h2
+          <h3 class="text-white mt-3">I consigliati da BoolFlix</h3>
+          <div class="text-center mt-3">
+            <h3 v-if="filteredRecommendedMovies.length > 0" class="text-white">
+              Film
+            </h3>
+            <h3
               style="color: red"
               v-if="filteredRecommendedMovies.length === 0"
             >
               Nessun film corrisponde alla tua ricerca
-            </h2>
+            </h3>
           </div>
           <div
             class="
@@ -44,16 +44,16 @@
               <app-movie-card :item="media" />
             </div>
           </div>
-          <div class="text-center mt-5">
-            <h2 v-if="filteredRecommendedSeries.length > 0" class="text-white">
-              TV series
-            </h2>
-            <h2
+          <div class="text-center mt-3">
+            <h3 v-if="filteredRecommendedSeries.length > 0" class="text-white">
+              Serie TV
+            </h3>
+            <h3
               style="color: red"
               v-if="filteredRecommendedSeries.length === 0"
             >
               Nessuna serie TV corrisponde alla tua ricerca
-            </h2>
+            </h3>
           </div>
           <div
             class="
@@ -73,14 +73,14 @@
             </div>
           </div>
         </div>
-        <div class="text-center mt-5">
-          <h2 v-if="filteredMovies.length > 0">Movies</h2>
-          <h2
+        <div class="text-center mt-3">
+          <h3 v-if="filteredMovies.length > 0">Film</h3>
+          <h3
             style="color: red"
             v-if="filteredMovies.length === 0 && pressedSearch === true"
           >
             Nessun film corrisponde alla tua ricerca
-          </h2>
+          </h3>
         </div>
 
         <div
@@ -100,14 +100,14 @@
             <app-movie-card :item="media" :filteredGenre="searchText" />
           </div>
         </div>
-        <div class="text-center mt-5">
-          <h2 v-if="filteredSeries.length > 0">TV series</h2>
-          <h2
+        <div class="text-center mt-3">
+          <h3 v-if="filteredSeries.length > 0">Serie TV</h3>
+          <h3
             style="color: red"
             v-if="filteredSeries.length === 0 && pressedSearch === true"
           >
             Nessuna serie TV corrisponde alla tua ricerca
-          </h2>
+          </h3>
         </div>
         <div
           class="
@@ -279,6 +279,8 @@ export default {
     reset(text) {
       (this.seriesList = []), (this.movieList = []), console.log(text);
       this.pressedSearch = false;
+      this.searchId = undefined;
+      // this.searchText = "";
     },
     search(text) {
       this.pressedSearch = true;
@@ -387,7 +389,7 @@ export default {
 
 <style lang="scss">
 @import "./assets/styles/general.scss";
-h2 {
+h3 {
   color: white;
 }
 </style>
